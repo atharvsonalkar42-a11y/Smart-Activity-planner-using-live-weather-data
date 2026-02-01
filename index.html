@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Activity Planner</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Initial Input Page -->
+    <div id="inputPage" class="page active">
+        <!-- Animated Weather Background -->
+        <div class="weather-background">
+            <div class="weather-animation">
+                <!-- Animated Sun -->
+                <div class="sun-container">
+                    <div class="sun"></div>
+                    <div class="sun-rays"></div>
+                </div>
+                
+                <!-- Moving Clouds -->
+                <div class="cloud cloud1"></div>
+                <div class="cloud cloud2"></div>
+                <div class="cloud cloud3"></div>
+                
+                <!-- Floating Weather Elements -->
+                <div class="weather-element raindrop" style="left: 10%; animation-delay: 0s;"></div>
+                <div class="weather-element raindrop" style="left: 20%; animation-delay: 2s;"></div>
+                <div class="weather-element raindrop" style="left: 30%; animation-delay: 4s;"></div>
+                <div class="weather-element snowflake" style="left: 70%; animation-delay: 1s;"></div>
+                <div class="weather-element snowflake" style="left: 80%; animation-delay: 3s;"></div>
+                <div class="weather-element snowflake" style="left: 90%; animation-delay: 5s;"></div>
+                
+                <!-- Weather Particles -->
+                <div class="particles"></div>
+            </div>
+            
+            <!-- Gradient Overlay -->
+            <div class="gradient-overlay"></div>
+        </div>
+        
+        <div class="container">
+            <div class="input-container">
+                <div class="logo-section">
+                    <div class="sun-icon">☀️</div>
+                    <h1>Smart Activity Planner</h1>
+                    <p>Using Live Weather Data Analysis</p>
+                </div>
+                
+                <div class="search-section">
+                    <div class="search-box">
+                        <input type="text" id="cityInput" placeholder="Enter city name..." />
+                        <button id="searchBtn" onclick="getWeatherData()">
+                            <span class="search-icon">🔍</span>
+                            Update
+                        </button>
+                    </div>
+                    <div class="example-text">Try: Toronto, London, New York, Tokyo...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Page -->
+    <div id="resultsPage" class="page">
+        <div class="background-scene">
+            <div class="landscape"></div>
+        </div>
+        
+        <div class="container">
+            <header class="main-header">
+                <div class="header-content">
+                    <div class="logo-section">
+                        <div class="sun-icon animated">☀️</div>
+                        <h1>Smart Activity Planner</h1>
+                        <p>Using Live Weather Data Analysis</p>
+                    </div>
+                    
+                    <div class="location-section">
+                        <div class="location-input">
+                            <input type="text" id="locationInput" placeholder="Location: Toronto" />
+                            <button id="updateBtn" onclick="getWeatherData()">Update</button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <main class="main-content">
+                <!-- Today's Best Activity -->
+                <section class="best-activity">
+                    <div class="activity-content">
+                        <div class="activity-text">
+                            <h2 id="mainActivity">Go Hiking!!</h2>
+                            <div class="activity-badge">
+                                <span id="activityDescription">Ideal weather for hiking!</span>
+                            </div>
+                        </div>
+                        <div class="activity-character">
+                            <div class="character-animation" id="activityIcon">🚶‍♂️</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Weather Details -->
+                <section class="weather-details">
+                    <div class="weather-cards">
+                        <div class="weather-card" id="tempCard">
+                            <div class="weather-info">
+                                <span class="time" id="currentTime">12:00</span>
+                                <span class="date" id="currentDate">Today</span>
+                            </div>
+                            <div class="card-icon">🌡️</div>
+                            <div class="card-value">
+                                <span id="temperature">24°C</span>
+                            </div>
+                            <div class="card-label">Temperature</div>
+                        </div>
+                        
+                        <div class="weather-card" id="humidityCard">
+                            <div class="weather-info">
+                                <span class="time" id="currentTime2">12:00</span>
+                                <span class="date" id="currentDate2">Today</span>
+                            </div>
+                            <div class="card-icon">💧</div>
+                            <div class="card-value">
+                                <span id="humidity">50%</span>
+                            </div>
+                            <div class="card-label">Humidity</div>
+                        </div>
+                        
+                        <div class="weather-card" id="windCard">
+                            <div class="weather-info">
+                                <span class="time" id="currentTime3">12:00</span>
+                                <span class="date" id="currentDate3">Today</span>
+                            </div>
+                            <div class="card-icon">💨</div>
+                            <div class="card-value">
+                                <span id="windSpeed">10 km/h</span>
+                            </div>
+                            <div class="card-label">Wind Speed</div>
+                        </div>
+                        
+                        <div class="weather-card" id="airCard">
+                            <div class="weather-info">
+                                <span class="time" id="currentTime4">12:00</span>
+                                <span class="date" id="currentDate4">Today</span>
+                            </div>
+                            <div class="card-icon">😊</div>
+                            <div class="card-value">
+                                <span id="airQuality">Good</span>
+                            </div>
+                            <div class="card-label">Air Quality</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Analysis Section -->
+                <section class="analysis-section">
+                    <div class="analysis-grid">
+                        <!-- Activities Analysis -->
+                        <div class="analysis-card">
+                            <h3>Activities Analysis</h3>
+                            <div class="chart-container">
+                                <canvas id="activityPieChart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <!-- Weather Trends -->
+                        <div class="analysis-card">
+                            <h3>Weather Trends</h3>
+                            <div class="chart-container">
+                                <canvas id="weatherTrendChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- AI Rule-Based Prediction for Next 2 Days -->
+                <section class="forecast-section">
+                    <h3>🤖 AI Rule-Based Prediction for Next 2 Days</h3>
+                    <div class="forecast-grid" id="forecastGrid">
+                        <!-- Forecast cards will be populated by JavaScript -->
+                    </div>
+                </section>
+
+                <!-- Additional Recommendations -->
+                <section class="recommendations-section">
+                    <h3>More Activities For You</h3>
+                    <div class="recommendations-grid" id="recommendationsGrid">
+                        <!-- Recommendations will be populated by JavaScript -->
+                    </div>
+                </section>
+            </main>
+        </div>
+        
+        <!-- Back Button -->
+        <button class="back-btn" onclick="showInputPage()">← Back</button>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <p>Fetching weather data...</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
